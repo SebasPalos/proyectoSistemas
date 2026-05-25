@@ -1,0 +1,19 @@
+{
+  "name": "compilador-educativo",
+  "version": "1.0.0",
+  "description": "Compilador educativo con visualizacion basica de AST",
+  "type": "module",
+  "scripts": {
+    "start": "npx serve .",
+    "dev": "npx serve ."
+  },
+  "keywords": [
+    "compiler",
+    "lexer",
+    "parser",
+    "ast",
+    "education"
+  ],
+  "author": "",
+  "license": "MIT"
+}

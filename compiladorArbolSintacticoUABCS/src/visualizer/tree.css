@@ -1,0 +1,260 @@
+/* Este archivo define el estilo del arbol visual que muestra la estructura del programa. */
+:root {
+  --tree-bg:            #f1f5f9;
+  --node-bg:            #ffffff;
+  --node-border:        #e2e8f0;
+  --node-border-hover:  #6366f1;
+  --line-color:         #94a3b8;
+  --type-color:         #1e293b;
+  --value-bg:           #e0f2fe;
+  --value-color:        #0369a1;
+
+  --font-sans:  system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono:  ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+  --connector-h: 28px;
+  --node-gap-x:  14px;
+  --node-gap-y:  28px;
+}
+
+#tree-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 48px 24px;
+  background: var(--tree-bg);
+  min-height: 320px;
+  overflow-x: auto;
+  overflow-y: auto;
+  font-family: var(--font-sans);
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}
+
+#tree-container::-webkit-scrollbar        { height: 6px; width: 6px; }
+#tree-container::-webkit-scrollbar-track  { background: transparent; }
+#tree-container::-webkit-scrollbar-thumb  { background: #cbd5e1; border-radius: 99px; }
+
+#tree-container:empty::after {
+  content: 'Sin árbol para mostrar.';
+  color: #94a3b8;
+  font-size: 0.9rem;
+  margin: auto;
+}
+
+
+.ast-tree,
+.ast-tree ul {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  position: relative;
+}
+
+.ast-tree li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: var(--connector-h);
+  padding-left:  var(--node-gap-x);
+  padding-right: var(--node-gap-x);
+  position: relative;
+}
+
+.ast-tree li::before,
+.ast-tree li::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 50%;
+  height: var(--connector-h);
+  border-top: 2px solid var(--line-color);
+}
+
+.ast-tree li::before { right: 50%; }
+.ast-tree li::after  { left:  50%; }
+
+.ast-tree li:first-child::before { border: none; }
+.ast-tree li:first-child::after  { border-radius: 6px 0 0 0; }
+
+.ast-tree li:last-child::after  { border: none; }
+.ast-tree li:last-child::before {
+  border-right: 2px solid var(--line-color);
+  border-radius: 0 6px 0 0;
+}
+
+.ast-tree li:only-child::before,
+.ast-tree li:only-child::after {
+  border: none;
+}
+.ast-tree li:only-child {
+  padding-top: 0;
+}
+
+.ast-tree li > ul {
+  padding-top: var(--connector-h);
+  position: relative;
+}
+
+.ast-tree li > ul::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  height: var(--connector-h);
+  border-left: 2px solid var(--line-color);
+  transform: translateX(-50%);
+}
+
+.tree-node {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  min-width: 110px;
+  max-width: 240px;
+  padding: 14px 20px;
+  background: var(--node-bg);
+  border: 1.5px solid var(--node-border);
+  border-radius: 14px;
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.07),
+    0 1px 2px rgba(0, 0, 0, 0.05);
+  position: relative;
+  z-index: 1;
+  cursor: default;
+  transition:
+    transform    0.18s ease,
+    box-shadow   0.18s ease,
+    border-color 0.18s ease;
+  word-break: break-word;
+  text-align: center;
+}
+
+.tree-node:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 10px 24px rgba(99, 102, 241, 0.15),
+    0 4px 8px rgba(0, 0, 0, 0.08);
+  border-color: var(--node-border-hover);
+}
+
+.tree-node--active {
+  border-color: var(--node-border-hover);
+  background: #eef2ff;
+  box-shadow:
+    0 0 0 3px rgba(99, 102, 241, 0.25),
+    0 4px 12px rgba(99, 102, 241, 0.2);
+}
+
+
+.tree-node__type {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--type-color);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  line-height: 1.2;
+}
+
+.tree-node__value {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--value-color);
+  background: var(--value-bg);
+  padding: 3px 10px;
+  border-radius: 6px;
+  line-height: 1.4;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tree-node__label {
+  font-size: 0.72rem;
+  color: #64748b;
+  font-style: italic;
+}
+.tree-node[data-type="Program"]          { border-color: #6366f1; }
+.tree-node[data-type="FunctionDecl"],
+.tree-node[data-type="FunctionCall"]     { border-color: #8b5cf6; }
+.tree-node[data-type="BinaryExpr"],
+.tree-node[data-type="UnaryExpr"]        { border-color: #0ea5e9; }
+.tree-node[data-type="Literal"],
+.tree-node[data-type="Identifier"]       { border-color: #10b981; }
+.tree-node[data-type="IfStatement"],
+.tree-node[data-type="WhileStatement"],
+.tree-node[data-type="ForStatement"]     { border-color: #f59e0b; }
+.tree-node[data-type="ReturnStatement"],
+.tree-node[data-type="BreakStatement"]   { border-color: #ef4444; }
+.tree-node[data-type="VarDeclaration"],
+.tree-node[data-type="Assignment"]       { border-color: #14b8a6; }
+
+.ast-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 20px;
+  justify-content: center;
+  padding: 16px 24px;
+  background: #ffffff;
+  border-top: 1px solid #e2e8f0;
+  font-size: 0.78rem;
+  color: #475569;
+}
+
+.ast-legend__item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ast-legend__dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  border: 2px solid currentColor;
+  flex-shrink: 0;
+}
+
+@media (max-width: 640px) {
+  :root {
+    --connector-h: 20px;
+    --node-gap-x:  8px;
+    --node-gap-y:  20px;
+  }
+
+  .tree-node {
+    min-width: 80px;
+    padding: 10px 14px;
+  }
+
+  .tree-node__type  { font-size: 0.72rem; }
+  .tree-node__value { font-size: 0.75rem; }
+}
+
+@keyframes nodeAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.85) translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.tree-node {
+  animation: nodeAppear 0.25s ease both;
+}
+
+.ast-tree > li > .tree-node          { animation-delay: 0ms;   }
+.ast-tree li li > .tree-node         { animation-delay: 60ms;  }
+.ast-tree li li li > .tree-node      { animation-delay: 120ms; }
+.ast-tree li li li li > .tree-node   { animation-delay: 180ms; }
+
+

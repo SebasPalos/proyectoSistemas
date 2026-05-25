@@ -1,0 +1,51 @@
+<!-- Este archivo muestra la pagina principal donde se escribe y ejecuta el codigo. -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Compilador Educativo</title>
+  <link rel="stylesheet" href="./styles/main.css" />
+</head>
+<body>
+  <header class="top-bar">
+    <h1>Compilador Educativo</h1>
+    <button id="runButton" type="button">Ejecutar</button>
+  </header>
+
+  <section id="messageArea" class="message info">
+    Escribe código y presiona "Ejecutar" para analizarlo.
+  </section>
+
+  <main class="layout">
+    <section class="panel left-panel">
+      <h2>Código fuente</h2>
+      <div class="editor-shell">
+        <textarea id="lineNumbers" aria-hidden="true" readonly tabindex="-1"></textarea>
+        <div class="code-layer">
+          <pre id="editorHighlights" aria-hidden="true"></pre>
+          <textarea id="codeEditor" spellcheck="false" aria-label="Editor de código">let x = 10;
+let y = x + 5;</textarea>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel right-panel">
+      <h2>Consola de salida</h2>
+      <pre id="consoleOutput">La consola está vacía.</pre>
+    </section>
+  </main>
+
+  <section class="panel console-panel">
+    <h2>Árbol sintáctico</h2>
+    <div id="tree-container"></div>
+  </section>
+
+  <section class="panel tokens-panel debug-hidden" data-debug="tokens">
+    <h2>Tokens</h2>
+    <pre id="tokensOutput">Aquí aparecerán los tokens.</pre>
+  </section>
+
+  <script type="module" src="../src/main.js"></script>
+</body>
+</html>
